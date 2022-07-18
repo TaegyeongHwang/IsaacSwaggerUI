@@ -1,25 +1,33 @@
 package isaac.swagger.repository;
 
 import isaac.swagger.domain.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository {
 
-    private Map<String, Member> store = new HashMap<>();
+    private final EntityManager em;
 
-    public Member save(Member member) {
+    public void save(Member member) {
 
-        store.put(member.getId(), member);
-
-        return store.get(member.getId());
+        em.persist(member);
     }
 
-    public Member findById(String memberId) {
+    public Member findById(Long no) {
 
-        return store.get(memberId);
+        return em.find(Member.class, no);
+    }
+
+    public List<Member> findAll() {
+
+        return em.createQuery("select m from Member m", Member.class)
+                .getResultList();
     }
 }

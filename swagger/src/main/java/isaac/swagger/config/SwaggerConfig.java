@@ -18,8 +18,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/api/**"))
-                //.paths(PathSelectors.any())
+                .paths(PathSelectors.ant("/api/**")) // /api 가 포함된 요청에 Swagger UI 생성
+                //.paths(PathSelectors.any()) // 모든 요청에 Swagger UI 생성
                 .build();
     }
 

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -16,17 +18,24 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public Member joinMember(MemberDto memberDTO) {
+    public Member joinMember(@RequestBody MemberDto memberDto) {
         log.info("joinMember()");
 
-        return memberService.saveMember(memberDTO);
+        return memberService.joinMember(memberDto);
     }
 
-    @GetMapping("/find/{memberId}")
-    public Member findMember(@PathVariable String memberId) {
+    @GetMapping("/find/{memberNo}")
+    public Member findMember(@PathVariable Long memberNo) {
         log.info("findMember()");
 
-        return memberService.findMember(memberId);
+        return memberService.findMember(memberNo);
+    }
+
+    @GetMapping("/findList")
+    public List<Member> findListMember() {
+        log.info("findListMember()");
+
+        return memberService.findListMember();
     }
 
 }

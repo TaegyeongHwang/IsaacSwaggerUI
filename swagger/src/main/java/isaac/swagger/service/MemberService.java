@@ -5,25 +5,41 @@ import isaac.swagger.dto.MemberDto;
 import isaac.swagger.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Member saveMember(MemberDto memberDTO) {
+    @Transactional
+    public Member joinMember(MemberDto memberDto) {
 
         Member member = new Member();
-        member.setId(memberDTO.getId());
-        member.setPassword(memberDTO.getPassword());
+        member.setId(memberDto.getId());
+        member.setPassword(memberDto.getPassword());
 
-        return memberRepository.save(member);
+        memberRepository.save(member);
+
+        Member saveMember = memberRepository.findById(member.getNo());
+
+        return saveMember;
     }
 
-    public Member findMember(String memberId) {
+    public Member findMember(Long memberNo) {
 
-        return memberRepository.findById(memberId);
+        return memberRepository.findById(memberNo);
     }
 
+    public List<Member> findListMember() {
+
+        List<Member> response = memberRepository.findAll();
+
+        return response;
+    }
 }
